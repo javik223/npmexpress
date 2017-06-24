@@ -9,6 +9,7 @@ const expiredToken =
 	'sImNyZWF0ZSIsInVwZGF0ZSJdfX0sImlhdCI6MTQ5Nzc5NzM4NiwiZXhwIjoxNDk3Nzk5MTg2LCJhdWQ' +
 	'iOiJCcml0dGFuaWEtVSBBcHAiLCJpc3MiOiJCcml0dGFuaWEtVSJ9.s9tonWT30cTPaTSHhwjUPbVZQL' +
 	'92xybEWVpYeYJo38o';
+const invalidToken = 'iadfafiafiafiafafasfafdakfas';
 const validToken =
 	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoiVWd3dWRpa2UiLCJ1c2VyVHlwZSI6ImFkbWluIiwicGVybWlzc2lvbnMiOnsiaW52b2ljZSI6WyJyZWFkIiwiY3JlYXRlIiwiZGVsZXRlIiwidXBkYXRlIl0sInF1b3RlIjpbInJlYWQiLCJ1cGRhdGUiXSwidXNlckFjY291bnQiOlsicmVhZCIsImNyZWF0ZSIsInVwZGF0ZSJdfX0sImlhdCI6MTQ5ODMzMTcxOCwiZXhwIjoxNDk4MzMzNTE4LCJhdWQiOiJCcml0dGFuaWEtVSBBcHAiLCJpc3MiOiJCcml0dGFuaWEtVSJ9.UnsYB_fTgtJwgZB-JXbkzlGi9NCVut91pvU_R9-f52w';
 let permissions = {
@@ -35,6 +36,11 @@ describe('Access Control Test Suite', () => {
 
 	it('Getting a non available data object should return false', () => {
 		const Access = new ACLT.AccessControl(permissions);
+		Access.can('teachers:create').should.equal(false);
+	});
+
+	it('Should return error for invalid token', () => {
+		const Access = new ACLT.AccessControl(invalidToken);
 		Access.can('teachers:create').should.equal(false);
 	});
 });
