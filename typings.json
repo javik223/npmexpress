@@ -1,0 +1,9 @@
+{
+  "globalDependencies": {
+    "passport": "registry:dt/passport#0.3.0+20170207191958",
+    "sleep": "registry:dt/sleep#0.0.0+20161005184000"
+  },
+  "globalDevDependencies": {
+    "chai": "registry:dt/chai#3.4.0+20170217154556"
+  }
+}
