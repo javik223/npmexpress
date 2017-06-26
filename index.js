@@ -27,7 +27,7 @@ console.log(new ACLT.AccessControl(token).can('userAccount:create'));
 app.use(morgan('tiny'));
 app.use(compression());
 app.get('/', (req, res) => {
-	res.send('token');
+	res.send(token);
 });
 app.listen(3000, () => {
 	console.log("I'm listening on port 3000");
