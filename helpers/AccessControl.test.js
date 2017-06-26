@@ -10,8 +10,17 @@ const expiredToken =
 	'iOiJCcml0dGFuaWEtVSBBcHAiLCJpc3MiOiJCcml0dGFuaWEtVSJ9.s9tonWT30cTPaTSHhwjUPbVZQL' +
 	'92xybEWVpYeYJo38o';
 const invalidToken = 'iadfafiafiafiafafasfafdakfas';
-const validToken =
-	'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InVzZXJuYW1lIjoiVWd3dWRpa2UiLCJ1c2VyVHlwZSI6ImFkbWluIiwicGVybWlzc2lvbnMiOnsiaW52b2ljZSI6WyJyZWFkIiwiY3JlYXRlIiwiZGVsZXRlIiwidXBkYXRlIl0sInF1b3RlIjpbInJlYWQiLCJ1cGRhdGUiXSwidXNlckFjY291bnQiOlsicmVhZCIsImNyZWF0ZSIsInVwZGF0ZSJdfX0sImlhdCI6MTQ5ODQ1OTI0NCwiZXhwIjoxNDk4NDYxMDQ0LCJhdWQiOiJCcml0dGFuaWEtVSBBcHAiLCJpc3MiOiJCcml0dGFuaWEtVSJ9.kpqA8a3WyRL6OipLB7zzf6nB7-T6RTnc2pY89LdlRn8';
+const userData = {
+	username: 'Ugwudike',
+	userType: 'admin',
+	permissions: {
+		invoice: ['read', 'create', 'delete', 'update'],
+		quote: ['read', 'update'],
+		userAccount: ['read', 'create', 'update'],
+	},
+};
+
+const validToken = ACLT.generateToken(userData);
 let permissions = {
 	invoice: ['read', 'create', 'delete', 'update'],
 	quote: ['read', 'update'],
@@ -19,40 +28,53 @@ let permissions = {
 };
 
 describe('Access Control Test Suite', () => {
-	it('Using Expired Token should return false', () => {
-		const Access = new ACLT.AccessControl(expiredToken);
-		Access.can('userAccount:create').should.equal(false);
+	describe('Expired Token', () => {
+		it('should return return false when expired token is used', () => {
+			const Access = new ACLT.AccessControl(expiredToken);
+			Access.can('userAccount:create').should.equal(false);
+		});
 	});
 
-	it('Using a valid token should return true for invoice:create', () => {
-		const Access = new ACLT.AccessControl(validToken);
-		Access.can('invoice:create').should.equal(true);
+	describe('Valid Token', () => {
+		it('should return true for invoice:create', () => {
+			const Access = new ACLT.AccessControl(validToken);
+			Access.can('invoice:create').should.equal(true);
+		});
+
+		it('should return false for non-available data', () => {
+			const Access = new ACLT.AccessControl(validToken);
+			Access.can('teachers:create').should.equal(false);
+		});
 	});
 
-	it('Using a valid token should return true for invoice:create', () => {
-		const Access = new ACLT.AccessControl(validToken);
-		Access.can('invoice:create').should.equal(true);
+	describe('Invalid Token', () => {
+		it('should return false for invalid token', () => {
+			const Access = new ACLT.AccessControl(invalidToken);
+			Access.can('teachers:create').should.equal(false);
+		});
 	});
 
-	it('Getting a non available data object should return false', () => {
-		const Access = new ACLT.AccessControl(permissions);
-		Access.can('teachers:create').should.equal(false);
-	});
-
-	it('Should return error for invalid token', () => {
-		const Access = new ACLT.AccessControl(invalidToken);
-		Access.can('teachers:create').should.equal(false);
+	describe('No token or permissions object supplied', () => {
+		it('should throw an error if no permissions object or token is supplied', () => {
+			(function() {
+				new ACLT.AccessControl().can('blog:create');
+			}.should.throw(Error));
+		});
 	});
 });
 
-describe('Check Errors:', () => {
-	it('It should error if given no JWT token or objects', () => {
+describe('generateToken', () => {
+	it('should generate a valid token if a data object is supplied', () => {
+		const data = {
+			name: 'Victory Ugwudike',
+			password: 'xperience',
+		};
+		ACLT.generateToken(data).should.be.a('string');
+	});
+
+	it('should throw and error if no data object is passed', () => {
 		(function() {
-			new ACLT.AccessControl().can('blog:create');
+			ACLT.generateToken();
 		}.should.throw(Error));
 	});
 });
-
-function testingError() {
-	throw new Error('Lang');
-}
