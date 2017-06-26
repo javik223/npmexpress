@@ -28,7 +28,7 @@ app.use(morgan('tiny'));
 app.use(compression());
 app.get('/', (req, res) => {
 	// res.send(token);
-	res.send(`<h1>Not bad<h1>`);
+	res.send(`<h1>Hmmn Ok<h1>`);
 });
 app.listen(3000, () => {
 	console.log("I'm listening on port 3000");
