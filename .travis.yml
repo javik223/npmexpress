@@ -5,3 +5,7 @@ install:
   - npm install -g mocha
   - npm install
   - npm install nodemon
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: rsync -avzhe ssh --progress . root@178.62.2.151:/newbuilds
