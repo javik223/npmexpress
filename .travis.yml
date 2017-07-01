@@ -7,7 +7,9 @@ install:
   - npm install nodemon
 env:
   RSYNC_PASSWORD=xperience
+before_deploy:
+  ssh-add /tmp/DO_teamcity.pub
 deploy:
   skip_cleanup: true
   provider: script
-  script: rsync -avzhe ssh --progress -p xperience . root@178.62.2.151:/newbuilds
+  script: rsync -avzhe ssh --progress . root@178.62.2.151:/newbuilds
