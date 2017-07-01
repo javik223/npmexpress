@@ -5,6 +5,7 @@ install:
   - npm install -g mocha
   - npm install
   - npm install nodemon
+  - apt-get install ssh-add
 env:
   RSYNC_PASSWORD=xperience
 before_deploy:
@@ -12,4 +13,4 @@ before_deploy:
 deploy:
   skip_cleanup: true
   provider: script
-  script: rsync -avzhe ssh --progress . root@178.62.2.151:/newbuilds
+  script: rsync -avzhe ssh --progress --quiet . root@178.62.2.151:/newbuilds
