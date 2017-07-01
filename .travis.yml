@@ -5,6 +5,8 @@ install:
   - npm install -g mocha
   - npm install
   - npm install nodemon
+env:
+RSYNC_PASSWORD=xperience
 deploy:
   skip_cleanup: true
   provider: script
