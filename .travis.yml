@@ -2,8 +2,8 @@ language: node_js
 node_js:
   - "8"
 before_install:
-  - apt-get update
-  - apt-get install -y ssh-add
+  - sudo apt-get update
+  - sudo apt-get install -y ssh-add
 install: 
   - npm install -g mocha
   - npm install
